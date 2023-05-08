@@ -11,9 +11,15 @@ from nyt_to_discord.nyt import NYT_BASE_URL
 
 
 NYT_COOKIES_ENV_VAR_NAME = "NYT_COOKIES"
+
+RANKING_BOARD_DATE_CLASS = "lbd-type__date"
 RANKING_BOARD_ITEMS_CLASS = "lbd-board__items"
-RANKING_BOARD_NAME_CLASS = "lbd-score__name"
-RANKING_BOARD_TIME_CLASS = "lbd-score__time"
+
+RANKING_BOARD_ROW_CLASS = "lbd-score"
+RANKING_BOARD_RANK_CLASS = f"{RANKING_BOARD_ROW_CLASS}__rank"
+RANKING_BOARD_NAME_CLASS = f"{RANKING_BOARD_ROW_CLASS}__name"
+RANKING_BOARD_TIME_CLASS = f"{RANKING_BOARD_ROW_CLASS}__time"
+
 
 
 @dataclass(frozen=True)
@@ -23,12 +29,12 @@ class CrosswordResult:
 
     @staticmethod
     def from_row_soup(soup: PageElement) -> CrosswordResult:
-        if soup.name != "div" and soup["class"] != "lbd-score":
+        if soup.name != "div" and soup["class"] != RANKING_BOARD_ROW_CLASS:
             raise ValueError("Unexpected soup!")
 
-        name = soup.find(class_="lbd-score__name").contents[0].strip()
+        name = soup.find(class_=RANKING_BOARD_NAME_CLASS).contents[0].strip()
         (min_str, sec_str) = (
-            soup.find(class_="lbd-score__time").contents[0].strip().split(":")
+            soup.find(class_=RANKING_BOARD_TIME_CLASS).contents[0].strip().split(":")
         )
         time = timedelta(minutes=int(min_str), seconds=int(sec_str))
         return CrosswordResult(name, time)
@@ -73,7 +79,9 @@ class Leaderboard:
         if self._date is not None:
             return self._date
 
-        date_str = self._soup.find("lbd-type__date").date_element.contents[0].strip()
+        date_str = (
+            self._soup.find(RANKING_BOARD_DATE_CLASS).date_element.contents[0].strip()
+        )
         # Example str: Monday, May 8, 2023
         date_format = "%A, %B %d, %Y"
         datetime_ = datetime.datetime.strptime(date_str, date_format)
