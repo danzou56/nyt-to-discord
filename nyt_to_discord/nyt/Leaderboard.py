@@ -69,9 +69,12 @@ class Leaderboard:
         return self._scores
 
     @property
-    def date(self):
+    def date(self) -> datetime.date:
         if self._date is not None:
             return self._date
 
-        date_soup = self._soup.find("lbd-type__date")
-        return None
+        date_str = self._soup.find("lbd-type__date").date_element.contents[0].strip()
+        # Example str: Monday, May 8, 2023
+        date_format = "%A, %B %d, %Y"
+        datetime_ = datetime.datetime.strptime(date_str, date_format)
+        return datetime.date(year=datetime_.year, month=datetime_.month, day=datetime_.day)
