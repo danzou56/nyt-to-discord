@@ -43,17 +43,18 @@ class Leaderboard:
     LEADERBOARD_ENDPOINT = "puzzles/leaderboards"
     LEADERBOARD_URL = f"{NYT_BASE_URL}/{LEADERBOARD_ENDPOINT}"
 
-    def __init__(self):
+    def __init__(self, cookies=None):
         self._scores = None
         self._date = None
         self._bs_soup = None
+        self._cookies = cookies or os.environ[NYT_COOKIES_ENV_VAR_NAME]
 
     @property
     def _soup(self) -> BeautifulSoup:
         if self._bs_soup is not None:
             return self._bs_soup
 
-        headers = {"cookie": os.environ[NYT_COOKIES_ENV_VAR_NAME]}
+        headers = {"cookie": self._cookies}
         r = requests.get(self.LEADERBOARD_URL, headers=headers)
         if r.status_code != 200:
             raise RuntimeError(r)
