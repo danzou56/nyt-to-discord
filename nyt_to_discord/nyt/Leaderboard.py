@@ -78,5 +78,7 @@ class Leaderboard:
         date_format = "%A, %B %d, %Y"
         datetime_ = datetime.datetime.strptime(date_str, date_format)
         return datetime.date(
-            year=datetime_.year, month=datetime_.month, day=datetime_.day,
+            year=datetime_.year,
+            month=datetime_.month,
+            day=datetime_.day,
         )
