@@ -1,9 +1,10 @@
-from nyt_to_discord.nyt.scrape import scrape
+# from nyt_to_discord.nyt.Leaderboard import scrape
 
 
 def main():
-    print(scrape())
+    pass
+    # print(scrape())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
