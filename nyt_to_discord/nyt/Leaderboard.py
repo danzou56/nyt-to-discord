@@ -1,14 +1,14 @@
 from __future__ import annotations
+
 import datetime
-from datetime import timedelta
 import os
 from dataclasses import dataclass
+from datetime import timedelta
 
 import requests
 from bs4 import BeautifulSoup, PageElement
 
 from nyt_to_discord.nyt import NYT_BASE_URL
-
 
 NYT_COOKIES_ENV_VAR_NAME = "NYT_COOKIES"
 
@@ -19,7 +19,6 @@ RANKING_BOARD_ROW_CLASS = "lbd-score"
 RANKING_BOARD_RANK_CLASS = f"{RANKING_BOARD_ROW_CLASS}__rank"
 RANKING_BOARD_NAME_CLASS = f"{RANKING_BOARD_ROW_CLASS}__name"
 RANKING_BOARD_TIME_CLASS = f"{RANKING_BOARD_ROW_CLASS}__time"
-
 
 
 @dataclass(frozen=True)
