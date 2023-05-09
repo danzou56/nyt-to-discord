@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 from dataclasses import dataclass
 from datetime import timedelta
+from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup, PageElement
@@ -58,9 +59,7 @@ class Leaderboard:
         if self._date is not None:
             return self._date
 
-        date_str = (
-            self._soup.find(RANKING_BOARD_DATE_CLASS).date_element.contents[0].strip()
-        )
+        date_str = self._soup.find(class_=RANKING_BOARD_DATE_CLASS).contents[0].strip()
         # Example str: Monday, May 8, 2023
         date_format = "%A, %B %d, %Y"
         datetime_ = datetime.datetime.strptime(date_str, date_format)
@@ -74,7 +73,7 @@ class Leaderboard:
 @dataclass(frozen=True)
 class CrosswordResult:
     name: str
-    time: datetime.timedelta
+    time: Optional[datetime.timedelta]
 
     @staticmethod
     def from_row_soup(soup: PageElement) -> CrosswordResult:
@@ -82,8 +81,14 @@ class CrosswordResult:
             raise ValueError("Unexpected soup!")
 
         name = soup.find(class_=RANKING_BOARD_NAME_CLASS).contents[0].strip()
-        (min_str, sec_str) = (
-            soup.find(class_=RANKING_BOARD_TIME_CLASS).contents[0].strip().split(":")
-        )
-        time = timedelta(minutes=int(min_str), seconds=int(sec_str))
-        return CrosswordResult(name, time)
+        try:
+            (min_str, sec_str) = (
+                soup.find(class_=RANKING_BOARD_TIME_CLASS)
+                .contents[0]
+                .strip()
+                .split(":")
+            )
+            time = timedelta(minutes=int(min_str), seconds=int(sec_str))
+            return CrosswordResult(name, time)
+        except:
+            return CrosswordResult(name, None)
