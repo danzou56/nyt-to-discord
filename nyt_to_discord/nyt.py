@@ -8,8 +8,6 @@ from typing import Optional
 import requests
 from bs4 import BeautifulSoup, PageElement
 
-from nyt_to_discord.nyt import NYT_BASE_URL
-
 RANKING_BOARD_DATE_CLASS = "lbd-type__date"
 RANKING_BOARD_ITEMS_CLASS = "lbd-board__items"
 
@@ -20,6 +18,7 @@ RANKING_BOARD_TIME_CLASS = f"{RANKING_BOARD_ROW_CLASS}__time"
 
 
 class Leaderboard:
+    NYT_BASE_URL = "https://www.nytimes.com"
     LEADERBOARD_ENDPOINT = "puzzles/leaderboards"
     LEADERBOARD_URL = f"{NYT_BASE_URL}/{LEADERBOARD_ENDPOINT}"
 
@@ -49,7 +48,7 @@ class Leaderboard:
 
         ranking_table = self._soup.find(class_=RANKING_BOARD_ITEMS_CLASS)
         self._scores = [
-            CrosswordResult.from_row_soup(result_soup)
+            CrosswordResult.from_row_soup(self.date, result_soup)
             for result_soup in ranking_table.children
         ]
         return self._scores
@@ -72,11 +71,12 @@ class Leaderboard:
 
 @dataclass(frozen=True)
 class CrosswordResult:
+    date: datetime.date
     name: str
     time: Optional[datetime.timedelta]
 
     @staticmethod
-    def from_row_soup(soup: PageElement) -> CrosswordResult:
+    def from_row_soup(date: datetime.date, soup: PageElement) -> CrosswordResult:
         if soup.name != "div" and soup["class"] != RANKING_BOARD_ROW_CLASS:
             raise ValueError("Unexpected soup!")
 
@@ -89,6 +89,6 @@ class CrosswordResult:
                 .split(":")
             )
             time = timedelta(minutes=int(min_str), seconds=int(sec_str))
-            return CrosswordResult(name, time)
+            return CrosswordResult(date, name, time)
         except:
-            return CrosswordResult(name, None)
+            return CrosswordResult(date, name, None)

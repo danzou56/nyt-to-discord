@@ -2,7 +2,7 @@ import os
 
 import discord
 
-from nyt_to_discord.nyt.Leaderboard import Leaderboard
+from nyt_to_discord.nyt import Leaderboard
 
 COOKIES = "NYT_COOKIES"
 CHANNEL_ID = "DISCORD_DTS_CHANNEL_ID"
