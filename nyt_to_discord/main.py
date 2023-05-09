@@ -13,6 +13,7 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
 
+# weird global data workaround
 class MSG:
     msg = "hello"
 
