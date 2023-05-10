@@ -20,6 +20,7 @@ class NytDiscordBot(discord.Client):
 
     def _build_leaderboard_msg(self) -> str:
         scores = self._leaderboard.scores
+        date = datetime.datetime.strftime(self._leaderboard.date, "%A, %B %-d, %Y")
         formatted_table = tabulate(
             [
                 [
@@ -32,9 +33,4 @@ class NytDiscordBot(discord.Client):
             headers=["Rank", "Name", "Time"],
             tablefmt="simple_grid",
         )
-        return (
-            f"Mini results for {datetime.datetime.strftime(self._leaderboard.date, '%A, %B %-d, %Y')} 👀\n"
-            f"```"
-            f"{formatted_table}"
-            f"```"
-        )
+        return f"Mini results for {date} 👀\n```{formatted_table}```"
