@@ -22,3 +22,13 @@ DISCORD_CHANNEL_ID=<channel-id>
   7. Store that value in `NYT_COOKIES`; make sure to single quote the string/look out for characters that need to be escaped
 * `DISCORD_BOT_TOKEN` - obtain a discord bot token
 * `DISCORD_CHANNEL_ID` - obtain the channel ID where you want the message to be sent
+
+## TODO
+
+* Store results in DB
+* Read results from DB and report statistics
+  * e.g. streak, avg over week, etc.
+* Set up automatic triggering (cron?)
+* Auto update score board throughout date (edit message)
+  * Announce winner once new mini comes out/scoreboard fills out
+  * Chastise anybody who didn't do it 🤔
