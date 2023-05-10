@@ -1,4 +1,7 @@
+import datetime
+
 import discord
+from tabulate import tabulate
 
 from nyt import Leaderboard
 
@@ -16,4 +19,22 @@ class NytDiscordBot(discord.Client):
         await self.close()
 
     def _build_leaderboard_msg(self) -> str:
-        return str(self._leaderboard.scores)
+        scores = self._leaderboard.scores
+        formatted_table = tabulate(
+            [
+                [
+                    rank + 1,
+                    score.name,
+                    ":".join(str(score.time).split(":")[1:]) if score.time else "N/A",
+                ]
+                for (rank, score) in enumerate(scores)
+            ],
+            headers=["Rank", "Name", "Time"],
+            tablefmt="simple_grid",
+        )
+        return (
+            f"Mini results for {datetime.datetime.strftime(self._leaderboard.date, '%A, %B %-d, %Y')} 👀\n"
+            f"```"
+            f"{formatted_table}"
+            f"```"
+        )
