@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
+requests = "~=2.30"
 python-dotenv = "*"
-"discord.py" = "*"
-beautifulsoup4 = "*"
+"discord.py" = "~=2.2"
+beautifulsoup4 = "~=4.12"
 urllib3 = "<2"
+tabulate = "~=0.9"
 
 [dev-packages]
 black = "*"
