@@ -7,16 +7,32 @@ from nyt import Leaderboard
 
 
 class NytDiscordBot(discord.Client):
-    def __init__(self, nyt_cookies: str, channel_id: int, *args, **kwargs):
+    def __init__(
+        self, nyt_cookies: str, channel_id: int, err_channel_id: int, *args, **kwargs
+    ):
         super().__init__(*args, **kwargs)
 
         self._channel_id = channel_id
-        self._leaderboard = Leaderboard(nyt_cookies)
+        self._err_channel_id = err_channel_id
+        self._nyt_cookies = nyt_cookies
+        self._leaderboard = None
+
+    @property
+    def leaderboard(self) -> Leaderboard:
+        if self._leaderboard is not None:
+            return self._leaderboard
+
+        self._leaderboard = Leaderboard(self._nyt_cookies)
 
     async def on_ready(self):
         channel = self.get_channel(self._channel_id)
-        await channel.send(self._build_leaderboard_msg())
-        await self.close()
+        try:
+            await channel.send(self._build_leaderboard_msg())
+        except Exception as e:
+            await self.get_channel(self._err_channel_id).send(e.__str__())
+            raise e
+        finally:
+            await self.close()
 
     def _build_leaderboard_msg(self) -> str:
         scores = self._leaderboard.scores
