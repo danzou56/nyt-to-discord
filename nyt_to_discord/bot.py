@@ -23,6 +23,7 @@ class NytDiscordBot(discord.Client):
             return self._leaderboard
 
         self._leaderboard = Leaderboard(self._nyt_cookies)
+        return self._leaderboard
 
     async def on_ready(self):
         channel = self.get_channel(self._channel_id)
@@ -35,8 +36,8 @@ class NytDiscordBot(discord.Client):
             await self.close()
 
     def _build_leaderboard_msg(self) -> str:
-        scores = self._leaderboard.scores
-        date = datetime.datetime.strftime(self._leaderboard.date, "%A, %B %-d, %Y")
+        scores = self.leaderboard.scores
+        date = datetime.datetime.strftime(self.leaderboard.date, "%A, %B %-d, %Y")
         formatted_table = tabulate(
             [
                 [
