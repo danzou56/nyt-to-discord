@@ -1,4 +1,5 @@
 import datetime
+import traceback
 
 import discord
 from tabulate import tabulate
@@ -25,13 +26,14 @@ class NytDiscordBot(discord.Client):
         self._leaderboard = Leaderboard(self._nyt_cookies)
         return self._leaderboard
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         channel = self.get_channel(self._channel_id)
         try:
             await channel.send(self._build_leaderboard_msg())
-        except Exception as e:
-            await self.get_channel(self._err_channel_id).send(e.__str__())
-            raise e
+        except:
+            channel = self.get_channel(self._err_channel_id)
+            traceback.print_exc()
+            await channel.send(traceback.format_exc())
         finally:
             await self.close()
 
