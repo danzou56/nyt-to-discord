@@ -26,12 +26,12 @@ DISCORD_CHANNEL_ID=<channel-id>
 ## TODO
 
 * Fix ranking during ties
-* Report errors via second channel
-* Store results in DB
+* ~Report errors via second channel - exceptions in on_ready cause hang~
+* ~Store results in DB~
   * Don't do anything weird if reported name changes
 * Read results from DB and report statistics
   * e.g. streak, avg over week, etc.
 * Set up automatic triggering (cron?)
-* Auto update score board throughout date (edit message)
+* ~Auto update score board throughout date (edit message)~
   * Announce winner once new mini comes out/scoreboard fills out
   * Chastise anybody who didn't do it 🤔
