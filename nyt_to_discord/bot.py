@@ -4,6 +4,7 @@ import traceback
 import discord
 from tabulate import tabulate
 
+from db import DB
 from nyt import Leaderboard
 
 
@@ -17,6 +18,7 @@ class NytDiscordBot(discord.Client):
         self._err_channel_id = err_channel_id
         self._nyt_cookies = nyt_cookies
         self._leaderboard = None
+        self._db = DB()
 
     @property
     def leaderboard(self) -> Leaderboard:
@@ -39,6 +41,7 @@ class NytDiscordBot(discord.Client):
 
     def _build_leaderboard_msg(self) -> str:
         scores = self.leaderboard.scores
+        self._db.update_scores(scores)
         date = datetime.datetime.strftime(self.leaderboard.date, "%A, %B %-d, %Y")
         formatted_table = tabulate(
             [

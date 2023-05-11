@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import datetime
-from dataclasses import dataclass
 from datetime import timedelta
 from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup, PageElement
+from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass, Mapped, mapped_column
 
 RANKING_BOARD_DATE_CLASS = "lbd-type__date"
 RANKING_BOARD_ITEMS_CLASS = "lbd-board__items"
@@ -69,11 +69,16 @@ class Leaderboard:
         )
 
 
-@dataclass(frozen=True)
-class CrosswordResult:
-    date: datetime.date
-    name: str
-    time: Optional[datetime.timedelta]
+class Base(DeclarativeBase):
+    pass
+
+
+class CrosswordResult(MappedAsDataclass, Base):
+    __tablename__ = "results"
+
+    date: Mapped[datetime.date] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(primary_key=True)
+    time: Mapped[Optional[datetime.timedelta]]
 
     @staticmethod
     def from_row_soup(date: datetime.date, soup: PageElement) -> CrosswordResult:
