@@ -1,3 +1,4 @@
+import datetime
 import os.path
 
 from sqlalchemy import create_engine, select
@@ -36,3 +37,9 @@ class DB:
             session.commit()
 
             return old_scores
+
+    def most_recent_date(self) -> datetime.date:
+        with Session(self.engine) as session:
+            results_table = CrosswordResult.__table__
+            stmt = select(results_table.c.date).order_by(results_table.c.date.desc())
+            return session.scalars(stmt).first()
