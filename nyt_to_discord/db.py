@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
 from nyt import CrosswordResult
-from nyt_to_discord import ROOT_DIR
+from . import ROOT_DIR
 
 
 class DB:
