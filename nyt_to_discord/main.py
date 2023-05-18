@@ -6,9 +6,8 @@ from dotenv import load_dotenv
 from bot import NytDiscordBot
 
 COOKIES = "NYT_COOKIES"
-CHANNEL_ID = "DISCORD_DTS_CHANNEL_ID"
-# CHANNEL_ID = "DISCORD_BBB_CHANNEL_ID"
-ERR_CHANNEL_ID = "DISCORD_DTS_CHANNEL_ID"
+CHANNEL_ID = "DISCORD_MSG_CHANNEL_ID"
+ERR_CHANNEL_ID = "DISCORD_ERR_CHANNEL_ID"
 BOT_TOKEN = "DISCORD_BOT_TOKEN"
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "../", ".env"))
