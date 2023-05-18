@@ -7,7 +7,7 @@ from nyt_to_discord.bot import NytDiscordBot
 from nyt_to_discord import ROOT_DIR
 
 COOKIES = "NYT_COOKIES"
-CHANNEL_ID = "DISCORD_ERR_CHANNEL_ID"
+CHANNEL_ID = "DISCORD_CHANNEL_ID"
 ERR_CHANNEL_ID = "DISCORD_ERR_CHANNEL_ID"
 BOT_TOKEN = "DISCORD_BOT_TOKEN"
 
