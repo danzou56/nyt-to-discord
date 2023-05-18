@@ -31,7 +31,11 @@ DISCORD_CHANNEL_ID=<channel-id>
   * Don't do anything weird if reported name changes
 * Read results from DB and report statistics
   * e.g. streak, avg over week, etc.
-* Set up automatic triggering (cron?)
+* ~Set up automatic triggering (cron?)~
 * ~Auto update score board throughout date (edit message)~
   * Announce winner once new mini comes out/scoreboard fills out
   * Chastise anybody who didn't do it 🤔
+* Notify on all results
+* Notify specific role only?
+  * I don't kow how discord works
+  * I think you just have to have the text @role...
