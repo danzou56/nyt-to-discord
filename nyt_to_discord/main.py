@@ -3,8 +3,8 @@ import os
 import discord
 from dotenv import load_dotenv
 
-from bot import NytDiscordBot
-from . import ROOT_DIR
+from nyt_to_discord.bot import NytDiscordBot
+from nyt_to_discord import ROOT_DIR
 
 COOKIES = "NYT_COOKIES"
 CHANNEL_ID = "DISCORD_MSG_CHANNEL_ID"

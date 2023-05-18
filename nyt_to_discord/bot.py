@@ -7,8 +7,8 @@ import discord
 from discord.ext import tasks
 from tabulate import tabulate
 
-from db import DB
-from nyt import Leaderboard
+from nyt_to_discord.db import DB
+from nyt_to_discord.nyt import Leaderboard
 
 _log = logging.getLogger(__name__)
 
