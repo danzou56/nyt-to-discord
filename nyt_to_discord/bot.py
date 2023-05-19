@@ -74,7 +74,7 @@ class NytDiscordBot(discord.Client):
 
         if all(score.time is not None for score in scores):
             await channel.send(
-                f"<@{self.NOTIF_ROLE_ID}> Check it out, all the scores are in!"
+                f"<@&{self.NOTIF_ROLE_ID}> Check it out, all the scores are in!"
             )
 
     async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
