@@ -92,7 +92,8 @@ class NytDiscordBot(discord.Client):
         finally:
             await self.close()
 
-    def _build_leaderboard_msg(self, date, scores) -> str:
+    @staticmethod
+    def _build_leaderboard_msg(date, scores) -> str:
         formatted_table = tabulate(
             [
                 [
