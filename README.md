@@ -35,7 +35,7 @@ DISCORD_CHANNEL_ID=<channel-id>
 * ~Auto update score board throughout date (edit message)~
   * Announce winner once new mini comes out/scoreboard fills out
   * Chastise anybody who didn't do it 🤔
-* Notify on all results
-* Notify specific role only?
+* ~~Notify on all results~~
+* ~~Notify specific role only?~~
   * I don't kow how discord works
   * I think you just have to have the text @role...
