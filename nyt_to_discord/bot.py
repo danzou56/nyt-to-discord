@@ -13,6 +13,22 @@ from nyt_to_discord.nyt import Leaderboard
 _log = logging.getLogger(__name__)
 
 
+def _async_reportable_error(func):
+    async def wrapper(self, *args, **kwargs):
+        try:
+            return await func(self, *args, **kwargs)
+        except Exception as e:
+            try:
+                channel = self.get_channel(self._err_channel_id)
+                await channel.send(traceback.format_exc())
+            except Exception:
+                pass
+            finally:
+                raise e
+
+    return wrapper
+
+
 class NytDiscordBot(discord.Client):
     MSG_DATE_FORMAT = "%A, %B %-d, %Y"
     REFRESH_SECONDS = 120
@@ -41,6 +57,7 @@ class NytDiscordBot(discord.Client):
         self.refresh_scores.start()
 
     @tasks.loop(seconds=REFRESH_SECONDS)
+    @_async_reportable_error
     async def refresh_scores(self) -> None:
         self._leaderboard = None
 
