@@ -6,6 +6,7 @@ from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup, PageElement
+from requests.adapters import HTTPAdapter, Retry
 from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass, Mapped, mapped_column
 
 RANKING_BOARD_DATE_CLASS = "lbd-type__date"
@@ -22,6 +23,16 @@ class Leaderboard:
     LEADERBOARD_ENDPOINT = "puzzles/leaderboards"
     LEADERBOARD_URL = f"{NYT_BASE_URL}/{LEADERBOARD_ENDPOINT}"
 
+    __session = requests.Session()
+    __session.mount(
+        "https://",
+        HTTPAdapter(
+            max_retries=Retry(
+                total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504]
+            )
+        ),
+    )
+
     def __init__(self, cookies):
         self._scores = None
         self._date = None
@@ -34,7 +45,7 @@ class Leaderboard:
             return self._bs_soup
 
         headers = {"cookie": self._cookies}
-        r = requests.get(self.LEADERBOARD_URL, headers=headers)
+        r = self.__session.get(self.LEADERBOARD_URL, headers=headers)
         if r.status_code != 200:
             raise RuntimeError(r)
 
