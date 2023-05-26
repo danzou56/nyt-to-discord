@@ -22,7 +22,11 @@ def _async_reportable_error(func):
                 channel = self.get_channel(self._err_channel_id)
                 await channel.send(traceback.format_exc())
             except Exception:
-                pass
+                _log.error(
+                    f"Unhandled exception in error handler while handling exception from {func.__name__}:\n"
+                    f"{traceback.format_exc()}\n"
+                    f"Now reraising original exception"
+                )
             finally:
                 raise e
 
